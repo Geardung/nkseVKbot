@@ -1,0 +1,51 @@
+{
+    "timeTablesURLs": [
+        [
+            "http://nkse.ru/html_pages/A_1_pn.htm",
+            "http://nkse.ru/html_pages/B_1_pn.htm"
+        ],
+        [
+            "http://nkse.ru/html_pages/A_1_vt.htm",
+            "http://nkse.ru/html_pages/B_1_vt.htm"
+        ],
+        [
+            "http://nkse.ru/html_pages/A_1_sr.htm",
+            "http://nkse.ru/html_pages/B_1_sr.htm"
+        ],
+        [
+            "http://nkse.ru/html_pages/A_1_ch.htm",
+            "http://nkse.ru/html_pages/B_1_ch.htm"
+        ],
+        [
+            "http://nkse.ru/html_pages/A_1_pt.htm",
+            "http://nkse.ru/html_pages/B_1_pt.htm"
+        ],
+        [
+            "http://nkse.ru/html_pages/A_1_sb.htm",
+            "http://nkse.ru/html_pages/B_1_sb.htm"
+        ]
+
+    ],
+    "timeTablesHTMLcodes": {
+        "groupsIDs": [
+            2,
+            24
+        ],
+        "LessonsIDs": [
+            [
+                3,
+                7,
+                11,
+                15,
+                19
+            ],
+            [
+                25,
+                29,
+                33,
+                37,
+                41
+            ]
+        ]
+    }
+}
