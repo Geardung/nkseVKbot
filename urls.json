@@ -2,27 +2,51 @@
     "timeTablesURLs": [
         [
             "http://nkse.ru/html_pages/A_1_pn.htm",
-            "http://nkse.ru/html_pages/B_1_pn.htm"
+            "http://nkse.ru/html_pages/B_1_pn.htm",
+            "http://nkse.ru/html_pages/A_2_pn.htm",
+            "http://nkse.ru/html_pages/B_2_pn.htm",
+            "http://nkse.ru/html_pages/A_3_pn.htm",
+            "http://nkse.ru/html_pages/B_3_pn.htm"
         ],
         [
             "http://nkse.ru/html_pages/A_1_vt.htm",
-            "http://nkse.ru/html_pages/B_1_vt.htm"
+            "http://nkse.ru/html_pages/B_1_vt.htm",
+            "http://nkse.ru/html_pages/A_2_vt.htm",
+            "http://nkse.ru/html_pages/B_2_vt.htm",
+            "http://nkse.ru/html_pages/A_3_vt.htm",
+            "http://nkse.ru/html_pages/B_3_vt.htm"
         ],
         [
             "http://nkse.ru/html_pages/A_1_sr.htm",
-            "http://nkse.ru/html_pages/B_1_sr.htm"
+            "http://nkse.ru/html_pages/B_1_sr.htm",
+            "http://nkse.ru/html_pages/A_2_sr.htm",
+            "http://nkse.ru/html_pages/B_2_sr.htm",
+            "http://nkse.ru/html_pages/A_3_sr.htm",
+            "http://nkse.ru/html_pages/B_3_sr.htm"
         ],
         [
             "http://nkse.ru/html_pages/A_1_ch.htm",
-            "http://nkse.ru/html_pages/B_1_ch.htm"
+            "http://nkse.ru/html_pages/B_1_ch.htm",
+            "http://nkse.ru/html_pages/A_2_ch.htm",
+            "http://nkse.ru/html_pages/B_2_ch.htm",
+            "http://nkse.ru/html_pages/A_3_ch.htm",
+            "http://nkse.ru/html_pages/B_3_ch.htm"
         ],
         [
             "http://nkse.ru/html_pages/A_1_pt.htm",
-            "http://nkse.ru/html_pages/B_1_pt.htm"
+            "http://nkse.ru/html_pages/B_1_pt.htm",
+            "http://nkse.ru/html_pages/A_2_pt.htm",
+            "http://nkse.ru/html_pages/B_2_pt.htm",
+            "http://nkse.ru/html_pages/A_3_pt.htm",
+            "http://nkse.ru/html_pages/B_3_pt.htm"
         ],
         [
             "http://nkse.ru/html_pages/A_1_sb.htm",
-            "http://nkse.ru/html_pages/B_1_sb.htm"
+            "http://nkse.ru/html_pages/B_1_sb.htm",
+            "http://nkse.ru/html_pages/A_2_sb.htm",
+            "http://nkse.ru/html_pages/B_2_sb.htm",
+            "http://nkse.ru/html_pages/A_3_sb.htm",
+            "http://nkse.ru/html_pages/B_3_sb.htm"
         ]
 
     ],

@@ -40,47 +40,138 @@ updatesProvider.getUpdates(updates => {
                 //      /расписание П-11-20 Среда       ||  /расписание П-11 Среда      ||      /расписание П-11
                 let parsgroup = grtable.initGroup(args[0])
                 if (Array.isArray(parsgroup)) {
-                    let data
+                    let d = new Date
+                    let date
                     if (args[1] == undefined) {
-                        data = Date.prototype.getDay()
+                        date = d.getDay()
+                        console.log("utc day is "+date)
                     }
-                    if (args[1] == "Понедельник" || args[1] == "понедельник" || data == 1) {
-                        //gettingTables("sr")
+                    if (args[1] == "Понедельник" || args[1] == "понедельник" || date == 1) {
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                            if (results[0]) {
+                                results[1]++
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                    grtable.buildTimeTable(resultsTwo).then((timetable) => {
+                                        api.messagesSend({
+                                            peer_id: subArray.object.peer_id,
+                                            reply_to: subArray.object.id,
+                                            message: timetable[1],
+                                            random_id: Math.random(),
+                                        })
+                                    })
+                                })
+                            } else {
+                                //Функция группа не найденa
+                            }
+                        })
 
-                    } else if (args[1] == "Вторник" || args[1] == "вторник" || data == 2) {
-                        //gettingTables("sr")
+                    } else if (args[1] == "Вторник" || args[1] == "вторник" || date == 2) {
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                            if (results[0]) {
+                                results[1]++
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                    grtable.buildTimeTable(resultsTwo).then((timetable) => {
+                                        api.messagesSend({
+                                            peer_id: subArray.object.peer_id,
+                                            reply_to: subArray.object.id,
+                                            message: timetable[1],
+                                            random_id: Math.random(),
+                                        })
+                                    })
+                                })
+                            } else {
+                                //Функция группа не найденa
+                            }
+                        })
 
-                    } else if (args[1] == "Среда" || args[1] == "среда" || data == 3) {
-                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[2]).then((results) => {
+                    } else if (args[1] == "Среда" || args[1] == "среда" || date == 3) {
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
                             // Должно вернуть массив [Есть ли такая группа, номер html в таблице, номер строки 0 или 1, Номер корпуса 0 или 1]
 
                             if (results[0]) {
                                 results[1]++
                                 console.log(results)
-                                api.messagesSend({
-                                    user_id: subArray.object.from_id,
-                                    message: "ЛОл НАШЕЛ ТВОЮ ГРУППУ",
-                                    random_id: Math.random()
-                                })
-
                                 //      Получаем [ [расписание 1 корпуса, расписание 2 корпуса], [Есть ли такая группа, номер html в таблице, номер строки 0 или 1, Номер корпуса 0 или 1] ]
                                 //      Вернет [Удачно ли, [ [Урок], [Препод], [Кабинет] ] ]
-                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[2] ,results]).then((resultsTwo) =>{
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
                                     console.log("ZHOPA")
+                                    console.log(resultsTwo)
+                                    grtable.buildTimeTable(resultsTwo).then((timetable) => {
+                                        //      Получаем [Удачно ли, "расписание, готовое для отправки"]
+                                        api.messagesSend({
+                                            peer_id: subArray.object.peer_id,
+                                            reply_to: subArray.object.id,
+                                            message: timetable[1],
+                                            random_id: Math.random(),
+                                        })
+                                        console.log("______TIMETABLEBUILD____________")
+                                        console.log(timetable)
+                                    })
                                 })
                             } else {
                                 //Функция группа не найдена
                             }
                         })
-                    } else if (args[1] == "Четверг" || args[1] == "четверг" || data == 4) {
-                        //gettingTables("sr")
-
-                    } else if (args[1] == "Пятница" || args[1] == "пятница" || data == 5) {
-                        //gettingTables("sr")
-
-                    } else if (args[1] == "Суббота" || args[1] == "суббота" || data == 6) {
-                        //gettingTables("sr")
-
+                    } else if (args[1] == "Четверг" || args[1] == "четверг" || date == 4) {
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                            if (results[0]) {
+                                results[1]++
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                    grtable.buildTimeTable(resultsTwo).then((timetable) => {
+                                        api.messagesSend({
+                                            peer_id: subArray.object.peer_id,
+                                            reply_to: subArray.object.id,
+                                            message: timetable[1],
+                                            random_id: Math.random(),
+                                        })
+                                    })
+                                })
+                            } else {
+                                //Функция группа не найденa
+                            }
+                        })
+                    } else if (args[1] == "Пятница" || args[1] == "пятница" || date == 5) {
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                            if (results[0]) {
+                                results[1]++
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                    grtable.buildTimeTable(resultsTwo).then((timetable) => {
+                                        api.messagesSend({
+                                            peer_id: subArray.object.peer_id,
+                                            reply_to: subArray.object.id,
+                                            message: timetable[1],
+                                            random_id: Math.random(),
+                                        })
+                                    })
+                                })
+                            } else {
+                                //Функция группа не найденa
+                            }
+                        })
+                    } else if (args[1] == "Суббота" || args[1] == "суббота" || date == 6) {
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                            if (results[0]) {
+                                results[1]++
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                    grtable.buildTimeTable(resultsTwo).then((timetable) => {
+                                        api.messagesSend({
+                                            peer_id: subArray.object.peer_id,
+                                            reply_to: subArray.object.id,
+                                            message: timetable[1],
+                                            random_id: Math.random(),
+                                        })
+                                    })
+                                })
+                            } else {
+                                //Функция группа не найденa
+                            }
+                        })
+                    } else if (args[1] == "Воскресенье" || args[1] == "воскресенье" || date == 0) {
+                        api.messagesSend({
+                            message: "Расписание на воскресенье? лол",
+                            user_id: subArray.object.from_id,
+                            random_id: Math.random()
+                        })
                     } else {
 
                     }

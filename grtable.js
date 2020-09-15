@@ -1,17 +1,18 @@
-const { patch } = require('request');
-
 const tabletojson = require('tabletojson').Tabletojson;
 
 // 2 && 24  -- Names of groups
 module.exports.getMaxlengthofArrays = function getMaxlengthofArrays(array) {
-    let counter = 0
-    let result = [false, []]
+    let result = 0
     return new Promise((resolve) => {
         if (Array.isArray(array)) {
-            result[0] = true
-            array.forEach((element) => {
+            array.forEach((element, index) => {
                 if (Array.isArray(element)) {
-                    array.forEach()
+                    if (element.length > result) {
+                        result = element.length
+                    }
+                }
+                if (index >= array.length) {
+                    resolve(result)
                 }
             })
         } else {
@@ -19,6 +20,27 @@ module.exports.getMaxlengthofArrays = function getMaxlengthofArrays(array) {
         }
     })
 }
+
+module.exports.parseArrayOfObjectsToArraysOfArrays = function parseArrayOfObjectsToArraysOfArrays(ArrayOfObjects) {
+
+    return new Promise((resolve) => {
+        let result = [false, []]
+        if (Array.isArray(ArrayOfObjects)) {
+            result[0] = true
+            new Promise(() => {
+
+                ArrayOfObjects.forEach((element, index) => {
+                    result[1].push(Object.entries(element))
+                })
+            }).then(() => {
+                resolve(result)
+            })
+        } else {
+            resolve(result)
+        }
+    })
+}
+
 module.exports.convertTableHTML = function convertTableHTML(url) {
     return new Promise((resolve) => {
 
@@ -122,7 +144,7 @@ module.exports.findGroup = function findGroup(findGroup, htmlURLsArray) {
                                     resolve(finalresult)
                                 })
                             }
-                        }, 1000);
+                        }, 2000);
                     })
                 })
             }
@@ -139,37 +161,36 @@ module.exports.findTimeTable = function findTimeTable(dataArray) {
             console.log("______________FindTimeTableModule________________")
             this.convertTableHTML(dataArray[0][dataArray[1][3]]).then((tablesAsJson) => {
                 let pureTable = tablesAsJson[0]
-                let counter = 0
                 pureTable.forEach((element, index) => {
                     // 16 - Предметы    |   >16 - Преподаватели и кабинеты
                     console.log(index)
                     let parsobj = Object.entries(element)
+                    this.getMaxlengthofArrays(parsobj)
                     if (index != 2 && index != 24 && index != 0 && index != 1 && index != 23 && index != 45) {
                         // ВАЩЕ, есть идея, сделать формулу типа Максимальная длина из всех строчек в секторе \ 2 = Число x . Если число длина строчки <= x , то это раздел с уроками
                         if (dataArray[1][2] == 0 && index <= 22) { // Если ищем первый сектор, значит все строки должны быть до 22
                             console.log("Попал в 1 сектор")
                             //console.log(parsobj.length)
                             if (parsobj.length <= 16) {
-                                console.log(parsobj[dataArray[1][1]-1][1])
+                                console.log(parsobj[dataArray[1][1] - 1][1])
                                 console.log(" Это отдел с уроками")
-                                result[1][0].push()
+                                result[1][0].push(parsobj[dataArray[1][1] - 1][1])
                             }
                         } else if (dataArray[1][2] == 1 && index <= 44) { // Если ищем второй сектор, значит все строки должны быть до 44
                             console.log("Попал в 2 сектор")
                             if (parsobj.length <= 16) { // 
                                 console.log(" Это отдел с уроками")
-                                
+
                             }
                         } else {
-                            resolve(result)
+                            console.log("LolL*(*(*(")
                         }
                     } else {
                         console.log("Не берется в расчет")
                     }
                     console.log("_____________________________")
-                    counter++
-                    if (counter < 45) {
-                        
+                    if (index >= pureTable.length - 1) {
+                        resolve(result)
                     }
                 })
             })
@@ -177,4 +198,36 @@ module.exports.findTimeTable = function findTimeTable(dataArray) {
     } else {
         return result
     }
+}
+
+module.exports.buildTimeTable = function buildTT(TimeTableArray) {
+    let result = [false, "Расписание: \n"]
+    return new Promise((resolve, reject) => {
+        if (Array.isArray(TimeTableArray)) {
+            result[0] = true
+            const even = n => !(n % 2)
+            let temp
+            let counter = 0
+            TimeTableArray[1][0].forEach((element, index) => {
+                if (even(index)) {
+                    counter++
+                    temp = element
+                    result[1] = result[1] + counter + ". " + element
+                } else {
+                    if (temp === element) {
+
+                    } else {
+                        result[1] = result[1] + element
+                    }
+
+                    result[1] = result[1] + "\n"
+                }
+                if (index >= TimeTableArray[1][0].length - 1) {
+                    resolve(result)
+                }
+            });
+        } else {
+            resolve(result)
+        }
+    })
 }
