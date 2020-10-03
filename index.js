@@ -1,6 +1,5 @@
 const HtmlTableToJson = require('html-table-to-json');
 const request = require('request');
-const grtable = require("./grtable.js")
 
 const tokenvk = "56f368c618c5b7350fb3bed2cc45f1d73584fe6a09f25673be886859cb5cfb90bff9e0122bc2cdc89086f"
 const groupidvk = 192617269
@@ -30,6 +29,7 @@ updatesProvider.getUpdates(updates => {
 
     updates.forEach((subArray) => {
         if (subArray.type == "message_new") {
+            const grtable = require("./grtable.js")
             let content = subArray.object.text
             let messageArrey = content.split(" ");
             let cmd = messageArrey[0];
@@ -37,20 +37,24 @@ updatesProvider.getUpdates(updates => {
 
 
             if (cmd == `/расписание`) {
+                console.log(args[1])
                 //      /расписание П-11-20 Среда       ||  /расписание П-11 Среда      ||      /расписание П-11
                 let parsgroup = grtable.initGroup(args[0])
                 if (Array.isArray(parsgroup)) {
                     let d = new Date
                     let date
-                    if (args[1] == undefined) {
-                        date = d.getDay()
-                        console.log("utc day is "+date)
-                    }
-                    if (args[1] == "Понедельник" || args[1] == "понедельник" || date == 1) {
-                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                    date = d.getDay()
+                    if (args[1] == "Понедельник" || args[1] == "понедельник" || (date == 1 && args[1] == undefined)) {
+                        let popololo 
+                        if (args[1] == undefined) {
+                            popololo = date - 1
+                        } else {
+                            popololo = 0
+                        }
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[popololo]).then((results) => {
                             if (results[0]) {
                                 results[1]++
-                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[popololo] ,results]).then((resultsTwo) =>{
                                     grtable.buildTimeTable(resultsTwo).then((timetable) => {
                                         api.messagesSend({
                                             peer_id: subArray.object.peer_id,
@@ -65,11 +69,19 @@ updatesProvider.getUpdates(updates => {
                             }
                         })
 
-                    } else if (args[1] == "Вторник" || args[1] == "вторник" || date == 2) {
-                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                    } else if (args[1] == "Вторник" || args[1] == "вторник" || (date == 2 && args[1] == undefined)) {
+                        
+                        let popololo 
+                        if (args[1] == undefined) {
+                            popololo = date - 1
+                        } else {
+                            popololo = 1
+                        }
+ 
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[popololo]).then((results) => {
                             if (results[0]) {
                                 results[1]++
-                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[popololo] ,results]).then((resultsTwo) =>{
                                     grtable.buildTimeTable(resultsTwo).then((timetable) => {
                                         api.messagesSend({
                                             peer_id: subArray.object.peer_id,
@@ -84,8 +96,15 @@ updatesProvider.getUpdates(updates => {
                             }
                         })
 
-                    } else if (args[1] == "Среда" || args[1] == "среда" || date == 3) {
-                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                    } else if (args[1] == "Среда" || args[1] == "среда" || (date == 3 && args[1] == undefined)) {
+                        
+                        let popololo 
+                        if (args[1] == undefined) {
+                            popololo = date - 1
+                        } else {
+                            popololo = 2
+                        }
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[popololo]).then((results) => {
                             // Должно вернуть массив [Есть ли такая группа, номер html в таблице, номер строки 0 или 1, Номер корпуса 0 или 1]
 
                             if (results[0]) {
@@ -93,7 +112,7 @@ updatesProvider.getUpdates(updates => {
                                 console.log(results)
                                 //      Получаем [ [расписание 1 корпуса, расписание 2 корпуса], [Есть ли такая группа, номер html в таблице, номер строки 0 или 1, Номер корпуса 0 или 1] ]
                                 //      Вернет [Удачно ли, [ [Урок], [Препод], [Кабинет] ] ]
-                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date - 1] ,results]).then((resultsTwo) =>{
                                     console.log("ZHOPA")
                                     console.log(resultsTwo)
                                     grtable.buildTimeTable(resultsTwo).then((timetable) => {
@@ -112,11 +131,19 @@ updatesProvider.getUpdates(updates => {
                                 //Функция группа не найдена
                             }
                         })
-                    } else if (args[1] == "Четверг" || args[1] == "четверг" || date == 4) {
-                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                    } else if (args[1] == "Четверг" || args[1] == "четверг" || (date == 4 && args[1] == undefined)) {
+                        
+                        let popololo 
+                        if (args[1] == undefined) {
+                            popololo = date - 1
+                        } else {
+                            popololo = 3
+                        }
+ 
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[popololo]).then((results) => {
                             if (results[0]) {
                                 results[1]++
-                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[popololo] ,results]).then((resultsTwo) =>{
                                     grtable.buildTimeTable(resultsTwo).then((timetable) => {
                                         api.messagesSend({
                                             peer_id: subArray.object.peer_id,
@@ -130,11 +157,20 @@ updatesProvider.getUpdates(updates => {
                                 //Функция группа не найденa
                             }
                         })
-                    } else if (args[1] == "Пятница" || args[1] == "пятница" || date == 5) {
-                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                    } else if (args[1] == "Пятница" || args[1] == "пятница" || (date == 5 && args[1] == undefined)) {
+                        console.log("LOOOOOOOOOOOOOOSDFJSDLKGJSL:KDJG:LSJDG:LJS:LDKG")
+                        
+                        let popololo 
+                        if (args[1] == undefined) {
+                            popololo = date - 1
+                        } else {
+                            popololo = 4
+                        }
+ 
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[popololo]).then((results) => {
                             if (results[0]) {
                                 results[1]++
-                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[popololo] ,results]).then((resultsTwo) =>{
                                     grtable.buildTimeTable(resultsTwo).then((timetable) => {
                                         api.messagesSend({
                                             peer_id: subArray.object.peer_id,
@@ -148,11 +184,19 @@ updatesProvider.getUpdates(updates => {
                                 //Функция группа не найденa
                             }
                         })
-                    } else if (args[1] == "Суббота" || args[1] == "суббота" || date == 6) {
-                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[date-1]).then((results) => {
+                    } else if (args[1] == "Суббота" || args[1] == "суббота" || (date == 6 && args[1] == undefined)) {
+                        
+                        let popololo 
+                        if (args[1] == undefined) {
+                            popololo = date - 1
+                        } else {
+                            popololo = 5
+                        }
+ 
+                        grtable.findGroup(parsgroup, timeTablesUrl.timeTablesURLs[popololo]).then((results) => {
                             if (results[0]) {
                                 results[1]++
-                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[date-1] ,results]).then((resultsTwo) =>{
+                                grtable.findTimeTable([timeTablesUrl.timeTablesURLs[popololo] ,results]).then((resultsTwo) =>{
                                     grtable.buildTimeTable(resultsTwo).then((timetable) => {
                                         api.messagesSend({
                                             peer_id: subArray.object.peer_id,
@@ -166,7 +210,7 @@ updatesProvider.getUpdates(updates => {
                                 //Функция группа не найденa
                             }
                         })
-                    } else if (args[1] == "Воскресенье" || args[1] == "воскресенье" || date == 0) {
+                    } else if (args[1] == "Воскресенье" || args[1] == "воскресенье" || (date == 0 && args[1] == undefined)) {
                         api.messagesSend({
                             message: "Расписание на воскресенье? лол",
                             user_id: subArray.object.from_id,

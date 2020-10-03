@@ -1,0 +1,20 @@
+{
+  "name": "nksevkbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Geardung",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "cheerio-tableparser": "^1.0.1",
+    "html-table-to-json": "^1.0.0",
+    "node-vk-sdk": "^1.1.5",
+    "request": "^2.88.2",
+    "tabletojson": "^2.0.4",
+    "vk-node-sdk": "^0.1.8"
+  }
+}
