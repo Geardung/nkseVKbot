@@ -1,4 +1,5 @@
 const tabletojson = require('tabletojson').Tabletojson;
+var debugmode = true
 
 // 2 && 24  -- Names of groups
 module.exports.parseArrayOfObjectsToArraysOfArrays = function parseArrayOfObjectsToArraysOfArrays(ArrayOfObjects) {
@@ -59,7 +60,7 @@ module.exports.findGroup = function findGroup(findGroup, htmlURLsArray) {
     let selectedgroup = false
     if (!Array.isArray(findGroup)) {
         if (typeof (findGroup) == "string") {
-            selectedgroup = initGroup(findGroup)
+            selectedgroup = this.initGroup(findGroup)
         } else {
             reject("findGroup is not a String or Array")
         }
@@ -68,7 +69,8 @@ module.exports.findGroup = function findGroup(findGroup, htmlURLsArray) {
     }
 
     return new Promise((resolve, reject) => {
-        console.log("_________________________")
+        
+        if (debugmode) console.log("_________________________")
         let finalresult = [false]
         htmlURLsArray.forEach((htmlURLstring, numberofkorpus) => {
             if (selectedgroup) {
@@ -81,7 +83,7 @@ module.exports.findGroup = function findGroup(findGroup, htmlURLsArray) {
                             let groups = frst[counter]
                             let parsgroup = this.initGroup(groups[1])
                             let equal = this.arraysEqual(parsgroup, selectedgroup)
-                            console.log(parsgroup + "     |   " + selectedgroup + "   |   " + equal === true)
+                            if (debugmode) console.log(parsgroup + "     |   " + selectedgroup + "   |   " + equal === true)
                             if (equal === true) {
                                 // Нашло совпадение
                                 finalresult = [true, parseInt(groups[0], 10), 0, numberofkorpus]
@@ -94,7 +96,7 @@ module.exports.findGroup = function findGroup(findGroup, htmlURLsArray) {
                             }
                         }
                     }).then(() => {
-                        console.log("First check =>  " + finalresult)
+                        if (debugmode) console.log("First check =>  " + finalresult)
                         setTimeout(() => {
                             if (finalresult[0]) {
                                 resolve(finalresult)
@@ -109,7 +111,7 @@ module.exports.findGroup = function findGroup(findGroup, htmlURLsArray) {
                                         let groups = two[counter]
                                         let parsgroup = this.initGroup(groups[1])
                                         let equal = this.arraysEqual(parsgroup, selectedgroup)
-                                        console.log(parsgroup + "     |   " + selectedgroup + "     |       " + equal)
+                                        if (debugmode) console.log(parsgroup + "     |   " + selectedgroup + "     |       " + equal)
                                         if (equal === true) {
                                             // Нашло совпадение
                                             finalresult = [true, parseInt(groups[0], 10), 1, numberofkorpus]
@@ -141,61 +143,61 @@ module.exports.findTimeTable = function findTimeTable(dataArray) {
     let result = [false, [[], [], [], "", []]]
     if (dataArray.length === 2) {
         return new Promise((resolve) => {
-            console.log("______________FindTimeTableModule________________")
+            if (debugmode) console.log("______________FindTimeTableModule________________")
             this.convertTableHTML(dataArray[0][dataArray[1][3]]).then((tablesAsJson) => {
                 let pureTable = tablesAsJson[0]
                 this.parseArrayOfObjectsToArraysOfArrays(pureTable).then((lolarray) => {
                     pureTable.forEach((element, index) => {
                         // 16 - Предметы    |   >16 - Преподаватели и кабинеты
-                        console.log(index)
+                        if (debugmode) console.log(index)
                         let parsobj = Object.entries(element)
                         if (index == 0) {
-                            console.log(parsobj[0][1])
+                            if (debugmode) console.log(parsobj[0][1])
                             result[1][3] = parsobj[0][1]
                         }
                         if (index != 2 && index != 24 && index != 0 && index != 1 && index != 23 && index != 45) {
                             // ВАЩЕ, есть идея, сделать формулу типа Максимальная длина из всех строчек в секторе \ 2 = Число x . Если число длина строчки <= x , то это раздел с уроками
                             if (dataArray[1][2] == 0 && index <= 22) { // Если ищем первый сектор, значит все строки должны быть до 22
-                                console.log("Попал в 1 сектор")
-                                console.log(parsobj.length)
+                                if (debugmode) console.log("Попал в 1 сектор")
+                                if (debugmode) console.log(parsobj.length)
                                 if (parsobj.length <= 16) {
-                                    console.log(parsobj[dataArray[1][1] - 1][1])
-                                    console.log(" Это отдел с уроками")
+                                    if (debugmode) console.log(parsobj[dataArray[1][1] - 1][1])
+                                    if (debugmode) console.log(" Это отдел с уроками")
                                     result[1][0].push(parsobj[dataArray[1][1] - 1][1])
                                 } else {
-                                    console.log(" Это отдел с преподами и кабинетами")
+                                    if (debugmode) console.log(" Это отдел с преподами и кабинетами")
                                     let lol = dataArray[1][1] - 1
                                     lol = lol * 2
-                                    console.log(parsobj[lol])
+                                    if (debugmode) console.log(parsobj[lol])
                                     result[1][2].push(parsobj[lol][1])
                                     result[1][1].push(parsobj[lol - 1][1])
                                     result[1][4].push(parsobj[0][1])
                                 }
                             } else if (dataArray[1][2] == 1 && index <= 44 && index > 22) { // Если ищем второй сектор, значит все строки должны быть до 44
-                                console.log("Попал в 2 сектор")
+                                if (debugmode) console.log("Попал в 2 сектор")
                                 if (parsobj.length <= 16) { // 
-                                    console.log(parsobj[dataArray[1][1] - 1][1])
-                                    console.log(" Это отдел с уроками")
+                                    if (debugmode) console.log(parsobj[dataArray[1][1] - 1][1])
+                                    if (debugmode) console.log(" Это отдел с уроками")
                                     result[1][0].push(parsobj[dataArray[1][1] - 1][1])
                                 } else {
-                                    console.log(" Это отдел с преподами и кабинетами")
+                                    if (debugmode) console.log(" Это отдел с преподами и кабинетами")
                                     let lol = dataArray[1][1] - 1
                                     lol = lol * 2
-                                    console.log(parsobj[lol])
+                                    if (debugmode) console.log(parsobj[lol])
                                     result[1][2].push(parsobj[lol][1])
                                     result[1][1].push(parsobj[lol - 1][1])
                                     result[1][4].push(parsobj[0][1])
                                 }
                             } else {
-                                console.log("Пропускаем...")
+                                if (debugmode) console.log("Пропускаем...")
                             }
                         } else {
-                            console.log("Не берется в расчет")
+                            if (debugmode) console.log("Не берется в расчет")
                         }
-                        console.log("_____________________________")
+                        if (debugmode) console.log("_____________________________")
                         if (index >= pureTable.length - 1) {
-                            console.log(`КОнец ОбраБОтКИ `)
-                            console.log(result)
+                            if (debugmode) console.log(`КОнец ОбраБОтКИ `)
+                            if (debugmode) console.log(result)
                             resolve(result)
                         }
                     })
