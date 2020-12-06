@@ -1,5 +1,6 @@
 const tabletojson = require('tabletojson').Tabletojson;
-var debugmode = true
+var config = require("./config.json")
+var debugmode = config.debugmode
 
 // 2 && 24  -- Names of groups
 module.exports.parseArrayOfObjectsToArraysOfArrays = function parseArrayOfObjectsToArraysOfArrays(ArrayOfObjects) {

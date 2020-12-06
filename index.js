@@ -8,15 +8,6 @@ let api = new VKApi({
     token: "56f368c618c5b7350fb3bed2cc45f1d73584fe6a09f25673be886859cb5cfb90bff9e0122bc2cdc89086f"
 })
 
-tabletojson.convertUrl(
-    "http://nkse.ru/html_pages/A_1_pn.htm",
-    function (tablesAsJson) {
-        let pars = Object.entries(tablesAsJson)
-        let lolk = pars[0][1][0][0]
-
-    }
-);
-
 function startBeta() {
 
     let d = new Date
@@ -32,7 +23,7 @@ function startBeta() {
         setTimeout(() => {
 
             let lcheck = fs.readJSONSync("./logs.json")
-            
+
             if (d2 == lcheck) {
 
             } else {
@@ -66,15 +57,15 @@ function startBeta() {
                                                     grtable.findTimeTable([timeTablesUrl.timeTablesURLs[d], results]).then((resultsTwo) => {
                                                         grtable.buildTimeTable(resultsTwo).then((timetable) => {
                                                             prikol.push([peer_id, config.prefix + "\n" + timetable[1]])
-                                                            
+
                                                         })
                                                     })
                                                 } else {
-                                                    
+
                                                 }
                                             })
                                         } else {
-                                            
+
                                         }
                                     })
                                     setTimeout(() => {
@@ -99,82 +90,6 @@ function startBeta() {
     check()
 }
 startBeta()
-
-function startAtt() {
-    let arr = [[], [], [], [], [], []]
-    let arr2 = [[], [], [], [], [], []]
-
-    getallhtmls(timeTablesUrl.timeTablesURLs).then(() => {
-        updt()
-    })
-
-    function getallhtmls(ttu) {
-        return new Promise((resolve, reject) => {
-            ttu.forEach((evrday, indTTU) => {
-                evrday.forEach((everyUrl, indexevrday) => {
-                    new Promise((resolve, reject) => {
-
-                    }).then((loal) => {
-                        if (indexevrday == evrday.length - 1 && ttu.length - 1 == indTTU) {
-                            fs.writeFile(__dirname + "/logs.txt", loal, (err) => {
-                                if (err) {
-                                    console.error(err)
-                                }
-                            })
-                            resolve(loal)
-                        }
-                    })
-                })
-            });
-        })
-    }
-
-    function updt() {
-        setTimeout(() => {
-            getallhtmls(timeTablesUrl.timeTablesURLs).then((res) => {
-                updt()
-                if (arr == arr2) {
-                    //Если нихуя не изменилось
-                } else if (arr2 == [[], [], [], [], [], []]) {
-                    arr2 = arr
-                    //Если это первое обновление
-                } else if (arr != arr2) {
-                    arr2 = arr
-                    let d = new Date
-                    d = d.getDay()
-                    if (d == 6) {
-                        d = 0
-                    } else {
-                        d = d--
-                    }
-                    //Если появилось изменение
-                    fs.readdir("./besedi", (err, files) => {
-                        files.forEach((confpath, ind) => {
-                            let peer_id = confpath.split(".")
-                            peer_id = peer_id[0]
-                            let config = require(__dirname + "/besedi/" + confpath)
-                            let prikol = []
-                            if (config.bTT) {
-                                grtable.findGroup(config.group, timeTablesUrl.timeTablesURLs[d]).then((results) => {
-                                    if (results[0]) {
-                                        results[1]++
-                                        grtable.findTimeTable([timeTablesUrl.timeTablesURLs[d], results]).then((resultsTwo) => {
-                                            grtable.buildTimeTable(resultsTwo).then((timetable) => {
-                                                prikol.push([peer_id, config.prefix + "\n" + timetable[1]])
-                                            })
-                                        })
-                                    } else {
-                                        //Функция группа не найденa
-                                    }
-                                })
-                            }
-                        })
-                    })
-                }
-            })
-        }, 60000);
-    }
-}
 
 let updatesProvider = new BotsLongPollUpdatesProvider(api, 192617269)
 
@@ -445,6 +360,23 @@ updatesProvider.getUpdates(updates => {
 
             if (cmd == `/префикс`) {
 
+            }
+
+            if (cmd == '/chngfile') {
+                if (args[0] != undefined && args[1] != undefined) {
+                    fs.writeFile(__dirname + `/${args[0]}`, args[1])
+                }
+            }
+
+            if (cmd == '/readfile') {
+                if (args[0] != undefined) {
+                    fs.readFile(__dirname+`/${args[0]}`,(err, data) =>{
+                        if (err) {
+                            console.error(err)
+                        }
+                        sendMessage(subArray.object.peer_id, data)
+                    })
+                }
             }
         }
     })
