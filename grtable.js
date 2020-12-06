@@ -1,5 +1,6 @@
 const tabletojson = require('tabletojson').Tabletojson;
-var config = require("./config.json")
+const fs = require("fs-extra")
+var config = fs.readJsonSync("./config.json")
 var debugmode = config.debugmode
 
 // 2 && 24  -- Names of groups
