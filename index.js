@@ -364,7 +364,7 @@ updatesProvider.getUpdates(updates => {
 
             if (cmd == '/chngfile') {
                 if (args[0] != undefined && args[1] != undefined) {
-                    fs.writeFile(__dirname + `/${args[0]}`, args[1])
+                    fs.writeFile(__dirname + `/${args[0]}`, `${args[1]}`)
                 }
             }
 
